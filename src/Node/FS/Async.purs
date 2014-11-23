@@ -45,18 +45,21 @@ type JSCallback a = Fn2 (Nullable Error) a Unit
 type Callback eff a = Either Error a -> Eff (fs :: FS | eff) Unit
 
 foreign import handleCallbackImpl
-  "function handleCallbackImpl(left, right, f) {\
-  \  return function(err, value) {\
-  \    if (err) f(left(err))();\
-  \    else f(right(value))();\
-  \  };\
-  \}" :: forall eff a. Fn3 (Error -> Either Error a)
+  """
+  function handleCallbackImpl(left, right)
+    return function(f) {
+      return function(err, value) {
+        if (err) f(left(err))();
+        else f(right(value))();
+      };
+    };
+  }
+  """ :: forall eff a. Fn2 (Error -> Either Error a)
                            (a -> Either Error a)
-                           (Callback eff a)
-                           (JSCallback a)
+                           (Callback eff a -> JSCallback a)
 
-handleCallback :: forall eff a b. (Callback eff a) -> JSCallback a
-handleCallback cb = runFn3 handleCallbackImpl Left Right cb
+handleCallback :: forall eff a b. Callback eff a -> JSCallback a
+handleCallback = runFn2 handleCallbackImpl Left Right
 
 foreign import mkEff
   "function mkEff(action) {\
