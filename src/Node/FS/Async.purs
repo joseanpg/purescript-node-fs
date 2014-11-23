@@ -62,9 +62,11 @@ handleCallback :: forall eff a b. Callback eff a -> JSCallback a
 handleCallback = runFn2 handleCallbackImpl Left Right
 
 foreign import mkEff
-  "function mkEff(action) {\
-  \  return action;\
-  \}" :: forall eff a. (Unit -> a) -> Eff eff a
+  """
+  function mkEff(action) {
+    return action;
+  }
+  """ :: forall eff a. (Unit -> a) -> Eff eff a
 
 
 foreign import fs "var fs = require('fs');" ::
