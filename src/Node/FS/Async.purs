@@ -69,30 +69,32 @@ foreign import mkEff
   """ :: forall eff a. (Unit -> a) -> Eff eff a
 
 
-foreign import fs "var fs = require('fs');" ::
-  { rename     :: Fn3 FilePath FilePath        (JSCallback Unit) Unit
-  , truncate   :: Fn3 FilePath Number          (JSCallback Unit) Unit
-  , chown      :: Fn4 FilePath Number Number   (JSCallback Unit) Unit
-  , chmod      :: Fn3 FilePath Number          (JSCallback Unit) Unit
-  , link       :: Fn3 FilePath FilePath        (JSCallback Unit) Unit
-  , symlink    :: Fn4 FilePath FilePath String (JSCallback Unit) Unit
-  , unlink     :: Fn2 FilePath                 (JSCallback Unit) Unit
-  , rmdir      :: Fn2 FilePath                 (JSCallback Unit) Unit
-  , mkdir      :: Fn3 FilePath Number          (JSCallback Unit) Unit
-  , utimes     :: Fn4 FilePath Number Number   (JSCallback Unit) Unit
+foreign import fs 
+  """
+  var fs = require('fs');
+  """ :: { rename     :: Fn3 FilePath FilePath        (JSCallback Unit) Unit
+         , truncate   :: Fn3 FilePath Number          (JSCallback Unit) Unit
+         , chown      :: Fn4 FilePath Number Number   (JSCallback Unit) Unit
+         , chmod      :: Fn3 FilePath Number          (JSCallback Unit) Unit
+         , link       :: Fn3 FilePath FilePath        (JSCallback Unit) Unit
+         , symlink    :: Fn4 FilePath FilePath String (JSCallback Unit) Unit
+         , unlink     :: Fn2 FilePath                 (JSCallback Unit) Unit
+         , rmdir      :: Fn2 FilePath                 (JSCallback Unit) Unit
+         , mkdir      :: Fn3 FilePath Number          (JSCallback Unit) Unit
+         , utimes     :: Fn4 FilePath Number Number   (JSCallback Unit) Unit
   
-  , readlink   :: Fn2 FilePath (JSCallback FilePath)   Unit
-  , readdir    :: Fn2 FilePath (JSCallback [FilePath]) Unit
-  , stat       :: Fn2 FilePath (JSCallback StatsObj)   Unit
+        , readlink   :: Fn2 FilePath (JSCallback FilePath)   Unit
+        , readdir    :: Fn2 FilePath (JSCallback [FilePath]) Unit
+        , stat       :: Fn2 FilePath (JSCallback StatsObj)   Unit
   
-  , realpath   :: forall cache.  Fn3 FilePath   { | cache } (JSCallback FilePath) Unit
+        , realpath   :: forall cache.  Fn3 FilePath   { | cache } (JSCallback FilePath) Unit
   
-  , readFile   :: forall a opts. Fn3 FilePath   { | opts  } (JSCallback a) Unit
-  , writeFile  :: forall a opts. Fn4 FilePath a { | opts  } (JSCallback Unit) Unit
-  , appendFile :: forall a opts. Fn4 FilePath a { | opts  } (JSCallback Unit) Unit
+        , readFile   :: forall a opts. Fn3 FilePath   { | opts  } (JSCallback a) Unit
+        , writeFile  :: forall a opts. Fn4 FilePath a { | opts  } (JSCallback Unit) Unit
+        , appendFile :: forall a opts. Fn4 FilePath a { | opts  } (JSCallback Unit) Unit
   
-  , exists     :: forall a. Fn2 FilePath (Boolean -> a) Unit
-  }
+        , exists     :: forall a. Fn2 FilePath (Boolean -> a) Unit
+        }
   
 
 -- |
